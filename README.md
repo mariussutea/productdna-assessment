@@ -8,7 +8,7 @@ For systems other than Linux/MacOS, check install instructions [here](https://do
 
 2. Install the required dependencies
 
-`uv install`
+`uv sync`
 
 3. Change to the `src` directory
 

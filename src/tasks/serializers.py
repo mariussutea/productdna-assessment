@@ -25,7 +25,7 @@ class TaskSerializer(serializers.ModelSerializer):
         read_only_fields = ("id", "created_at",)
 
     def create(self, validated_data):
-        tags_data = validated_data.pop("tags")
+        tags_data = validated_data.pop("tags") if 'tags' in validated_data else []
 
         task = Task.objects.create(**validated_data)
 
@@ -38,7 +38,7 @@ class TaskSerializer(serializers.ModelSerializer):
 
 
     def update(self, instance, validated_data):
-        tags_data = validated_data.pop("tags")
+        tags_data = validated_data.pop("tags") if 'tags' in validated_data else []
 
         instance.title = validated_data.get("title", instance.title)
         instance.description = validated_data.get("description", instance.description)
