@@ -7,7 +7,7 @@ from .models import Task, Tag
 class TagSerializer(serializers.ModelSerializer):
     name = serializers.CharField(
         max_length=50,
-        validators=[UniqueValidator(queryset=Tag.objects.all())]
+        validators=[]
     )
 
     class Meta:
@@ -35,3 +35,20 @@ class TaskSerializer(serializers.ModelSerializer):
             task.tags.add(tag)
 
         return task
+
+
+    def update(self, instance, validated_data):
+        tags_data = validated_data.pop("tags")
+
+        instance.title = validated_data.get("title", instance.title)
+        instance.description = validated_data.get("description", instance.description)
+        instance.status = validated_data.get("status", instance.status)
+
+        instance.tags.clear()
+
+        for tag_data in tags_data:
+            tag, _ = Tag.objects.get_or_create(**tag_data)
+
+            instance.tags.add(tag)
+
+        return instance
